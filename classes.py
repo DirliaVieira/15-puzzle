@@ -7,7 +7,7 @@ class Tabuleiro:
         self.volta = pai
         self.filhos = []
         self.profundidade = depth
-
+        
     def __copy__(self):
         return Tabuleiro(self.estado)
     def __hash__(self):
