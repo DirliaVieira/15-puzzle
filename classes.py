@@ -1,13 +1,13 @@
 import copy
 class Tabuleiro:
     # Método de inicialização
-    def __init__(self, arg, pai=None, depth=0): 
+    def __init__(self, arg, pai=None, profund=0): 
         self.estado = arg
         self._findx()
         self.volta = pai
         self.filhos = []
-        self.profundidade = depth
-        
+        self.profundidade = profund
+
     def __copy__(self):
         return Tabuleiro(self.estado)
     def __hash__(self):
@@ -66,7 +66,7 @@ class Tabuleiro:
         if self.x != 0:
             jogada[self.x * 4 + self.y] = jogada[(self.x - 1) * 4 + self.y]
             jogada[(self.x - 1) * 4 + self.y] = '0'
-            tCima = Tabuleiro(jogada, pai=rota, depth=self.profundidade + 1)
+            tCima = Tabuleiro(jogada, pai=rota, profund=self.profundidade + 1)
             self.filhos.append(tCima)
 
     def _baixo(self):
@@ -77,7 +77,7 @@ class Tabuleiro:
         if self.x != 3:
             jogada[self.x * 4 + self.y] = jogada[(self.x + 1) * 4 + self.y]
             jogada[(self.x + 1) * 4 + self.y] = '0'
-            tBaixo = Tabuleiro(jogada, pai=rota, depth=self.profundidade + 1)
+            tBaixo = Tabuleiro(jogada, pai=rota, profund=self.profundidade + 1)
             self.filhos.append(tBaixo)
     
     def _direita(self):
@@ -88,7 +88,7 @@ class Tabuleiro:
         if self.y != 3:
             jogada[self.x * 4 + self.y] = jogada[self.x * 4 + self.y + 1]
             jogada[self.x * 4 + self.y + 1] = '0'
-            tDireita = Tabuleiro(jogada, pai=rota, depth=self.profundidade + 1)
+            tDireita = Tabuleiro(jogada, pai=rota, profund=self.profundidade + 1)
             self.filhos.append(tDireita)
 
     def _esquerda(self):
@@ -99,7 +99,7 @@ class Tabuleiro:
         if self.y != 0:
             jogada[self.x * 4 + self.y] = jogada[self.x * 4 + self.y - 1]
             jogada[self.x * 4 + self.y - 1] = '0'
-            tEsquerda = Tabuleiro(jogada, pai=rota, depth=self.profundidade + 1)
+            tEsquerda = Tabuleiro(jogada, pai=rota, profund=self.profundidade + 1)
             self.filhos.append(tEsquerda)
 
     def jogadas(self):

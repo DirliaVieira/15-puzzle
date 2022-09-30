@@ -64,21 +64,20 @@ class MinHeap:
             return None
         return self.data[1]
 
-# comparadores
 def hamming(estado_inicial, estado_objetivo):
     inicial = estado_inicial.estado
     objetivo = estado_objetivo.estado
-    depth = estado_inicial.profundidade
+    profund = estado_inicial.profundidade
     soma = 0
     for x, y in zip(objetivo, inicial):
         if x != y and x != '0':
             soma += 1
-    return soma + depth
+    return soma + profund
 
 def manhattan(estado_inicial, estado_objetivo):
     inicial = estado_inicial.estado
     objetivo = estado_objetivo.estado
-    depth = estado_inicial.profundidade
+    profund = estado_inicial.profundidade
     soma = 0
     for i in range(16):
         if objetivo[i] == '0':
@@ -89,9 +88,7 @@ def manhattan(estado_inicial, estado_objetivo):
                 x2, y2 = (int(j / 4), j % 4)
                 soma += abs(x1 - x2) + abs(y1 - y2)
                 break
-    return soma + depth
-
-
+    return soma + profund
 # Implementação dos algoritmos de Busca
 
 # Busca em largura --> Breadth-first search (bfs)
@@ -101,18 +98,18 @@ def bfs(estado_inicial, estado_objetivo):
     fronteira.append(estado_inicial)
 
     while len(fronteira) > 0:
-        state = fronteira.popleft()
+        estado = fronteira.popleft()
 
-        if estado_objetivo == state:
-            return state.backtrack, total_nos
-        for filho in state.moves():
+        if estado_objetivo == estado:
+            return estado.volta, total_nos
+        for filho in estado.jogadas():
             total_nos += 1
             fronteira.append(filho)
-        del(state);
+        del(estado);
     return False, total_nos
 
 # Busca em profundidade --> Depth-first search (dfs)
-def dfs(estado_inicial, estado_objetivo, depth):
+def dfs(estado_inicial, estado_objetivo, profund):
     total_nos = 1
     fronteira = list()
     visitados = set()
@@ -123,11 +120,11 @@ def dfs(estado_inicial, estado_objetivo, depth):
         visitados.add(estado)
 
         if estado == estado_objetivo:
-            return estado.backtrack, total_nos
+            return estado.volta, total_nos
 
         for filho in estado.jogadas():
             total_nos += 1
-            if filho.profundidade <= depth:
+            if filho.profundidade <= profund:
                 if filho not in visitados or filho not in fronteira:
                     fronteira.append(filho)
         del(estado)
@@ -145,7 +142,7 @@ def gulosa(estado_inicial, estado_objetivo, comparador):
             total_nos += 1
             if comparador(x, estado_objetivo) < comparador(estado, estado_objetivo):
                 estado = x
-    return estado.backtrack, total_nos
+    return estado.volta, total_nos
 
 # Busca A*
 def a_estrela(estado_inicial, estado_objetivo, comparador):
@@ -159,7 +156,7 @@ def a_estrela(estado_inicial, estado_objetivo, comparador):
         visitados.add(estado)
 
         if estado_objetivo == estado:
-            return estado.backtrack, total_nos
+            return estado.volta, total_nos
 
         for filho in estado.jogadas():
             total_nos += 1
